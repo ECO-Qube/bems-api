@@ -1,20 +1,63 @@
 basePath: /api/v1
+definitions:
+  main.EnergyConsumptionRateResponse:
+    properties:
+      consumed:
+        type: integer
+    type: object
+  main.FutureEnergyConsumptionRateRequest:
+    properties:
+      max:
+        type: integer
+      min:
+        type: integer
+      time:
+        type: string
+    type: object
+  main.FutureEnergyConsumptionRateResponse:
+    properties:
+      min:
+        type: integer
+      time:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
-  /example/helloworld:
+  /energy-consumption-rate:
     get:
       consumes:
       - application/json
-      description: do ping
+      description: The Building exposes the metrics of electrical energy consumption
+        (server+cooling) related to the entire Building in kW
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            type: string
-      summary: ping example
-      tags:
-      - example
+            $ref: '#/definitions/main.EnergyConsumptionRateResponse'
+      summary: The Building exposes the metrics of electrical energy consumption (server+cooling)
+        related to the entire Building in kW
+  /future-energy-consumption-rate:
+    get:
+      consumes:
+      - application/json
+      description: 'Accepts a possible energy range for the optimisation, e.g.: "10-25kW".
+        Returns a value in kW contained in the range representing'
+      parameters:
+      - description: Request providing a possible range of energy consumption
+        in: body
+        name: energy-consumption-rate-request
+        required: true
+        schema:
+          $ref: '#/definitions/main.FutureEnergyConsumptionRateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.FutureEnergyConsumptionRateResponse'
+      summary: 'A possible range for the optimisation, e.g.: "10-25kW" for the Building'
 swagger: "2.0"

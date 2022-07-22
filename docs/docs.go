@@ -16,26 +16,89 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/example/helloworld": {
+        "/energy-consumption-rate": {
             "get": {
-                "description": "do ping",
+                "description": "The Building exposes the metrics of electrical energy consumption (server+cooling) related to the entire Building in kW",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "tags": [
-                    "example"
-                ],
-                "summary": "ping example",
+                "summary": "The Building exposes the metrics of electrical energy consumption (server+cooling) related to the entire Building in kW",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/main.EnergyConsumptionRateResponse"
                         }
                     }
+                }
+            }
+        },
+        "/future-energy-consumption-rate": {
+            "get": {
+                "description": "Accepts a possible energy range for the optimisation, e.g.: \"10-25kW\". Returns a value in kW contained in the range representing",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "A possible range for the optimisation, e.g.: \"10-25kW\" for the Building",
+                "parameters": [
+                    {
+                        "description": "Request providing a possible range of energy consumption",
+                        "name": "energy-consumption-rate-request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.FutureEnergyConsumptionRateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.FutureEnergyConsumptionRateResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.EnergyConsumptionRateResponse": {
+            "type": "object",
+            "properties": {
+                "consumed": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.FutureEnergyConsumptionRateRequest": {
+            "type": "object",
+            "properties": {
+                "max": {
+                    "type": "integer"
+                },
+                "min": {
+                    "type": "integer"
+                },
+                "time": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.FutureEnergyConsumptionRateResponse": {
+            "type": "object",
+            "properties": {
+                "min": {
+                    "type": "integer"
+                },
+                "time": {
+                    "type": "string"
                 }
             }
         }
