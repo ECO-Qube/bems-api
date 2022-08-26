@@ -23,3 +23,4 @@ docker tag bems-api cristianohelio/bems-api:0.0.1
 docker push cristianohelio/bems-api:0.0.1
 ```
 
+Note: repo was moved to a private GitHub repo (https://github.com/criscola/bems-api)
